@@ -33,11 +33,17 @@ class FunctionalSpec extends PlaySpec with GuiceOneAppPerSuite {
     }
 
     "render the hello page" in {
-      val hello = route(app, FakeRequest(GET, "/hello")).get
+      val hello = route(app, FakeRequest(GET, "/hello?name=World")).get
 
       status(hello) mustBe Status.OK
       contentType(hello) mustBe Some("text/html")
       contentAsString(hello) must include ("Hello, World")
+    }
+
+    "render the hello page without name" in {
+      val hello = route(app, FakeRequest(GET, "/hello")).get
+
+      status(hello) mustBe Status.BAD_REQUEST
     }
 
   }
